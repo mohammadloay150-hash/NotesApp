@@ -1,10 +1,5 @@
 package com.mynotes.ui.components
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,10 +13,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -33,15 +26,6 @@ fun EmptyState(
     subtitle: String = "أضف ملاحظتك الأولى",
     modifier: Modifier = Modifier
 ) {
-    val infiniteTransition = rememberInfiniteTransition()
-    val scale by infiniteTransition.animateFloatAsState(
-        targetValue = 1.05f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1200),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -54,8 +38,8 @@ fun EmptyState(
     ) {
         Icon(
             imageVector = Icons.Outlined.EditNote,
-            contentDescription = "أيقونة ملاحظات فارغة",
-            modifier = Modifier.size(80.dp).scale(scale),
+            contentDescription = "رمز ملاحظات فارغة",
+            modifier = Modifier.size(80.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
         )
         Spacer(modifier = Modifier.height(16.dp))
