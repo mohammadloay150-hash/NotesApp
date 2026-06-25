@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
     <application
         android:allowBackup="true"
         android:label="ملاحظاتي"
         android:supportsRtl="true"
+        android:layoutDirection="rtl"
         android:theme="@style/Theme.NotesApp">
-
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -5,12 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -29,15 +26,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val viewModel: NotesViewModel = viewModel()
-            val isDarkMode by viewModel.isDarkMode.collectAsState()
-
-            NotesAppTheme(darkTheme = isDarkMode) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    NotesApp(viewModel = viewModel)
+            NotesAppTheme {
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                    NotesApp()
                 }
             }
         }
@@ -45,29 +36,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NotesApp(viewModel: NotesViewModel = viewModel()) {
+fun NotesApp() {
     val navController = rememberNavController()
-    val showArchived by viewModel.showArchived.collectAsState()
+    val viewModel: NotesViewModel = viewModel()
 
-    NavHost(
-        navController = navController,
-        startDestination = Screen.NotesList.route
-    ) {
+    NavHost(navController = navController, startDestination = Screen.NotesList.route) {
         composable(Screen.NotesList.route) {
             NotesListScreen(
                 viewModel = viewModel,
-                onNoteClick = { noteId ->
-                    navController.navigate(Screen.NoteDetail.createRoute(noteId))
-                },
-                onAddClick = {
-                    navController.navigate(Screen.NoteDetail.createRoute(null))
-                },
-                onArchivedClick = {
-                    viewModel.toggleArchived()
-                }
+                onNoteClick = { navController.navigate(Screen.NoteDetail.createRoute(it)) },
+                onAddClick = { navController.navigate(Screen.NoteDetail.createRoute(null)) }
             )
         }
-
         composable(
             route = Screen.NoteDetail.route,
             arguments = listOf(navArgument("noteId") { type = NavType.LongType })
