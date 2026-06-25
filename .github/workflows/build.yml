@@ -21,16 +21,14 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          cmdline-tools-version: 11076708
 
-      - name: Create Gradle wrapper if missing
+      - name: Create Gradle wrapper
         run: |
           if [ ! -f gradlew ]; then
             gradle wrapper --gradle-version 8.11.1 2>/dev/null || true
           fi
 
-      - name: Grant execute permission for gradlew
+      - name: Grant execute permission
         run: chmod +x gradlew 2>/dev/null || true
 
       - name: Build APK
@@ -38,12 +36,7 @@ jobs:
           if [ -f gradlew ]; then
             ./gradlew assembleRelease --stacktrace 2>&1
           else
-            # Download Gradle and build manually
-            curl -sL "https://services.gradle.org/distributions/gradle-8.11.1-bin.zip" -o gradle.zip
-            unzip -q gradle.zip
-            GRADLE_HOME=$(pwd)/gradle-8.11.1
-            export ANDROID_HOME=$ANDROID_SDK_ROOT
-            $GRADLE_HOME/bin/gradle assembleRelease --stacktrace 2>&1
+            gradle assembleRelease --stacktrace 2>&1
           fi
 
       - name: Sign APK
@@ -55,25 +48,30 @@ jobs:
           fi
           echo "APK found: $APK"
 
-          # Generate keystore
           keytool -genkey -v -keystore release.keystore \
             -alias key0 -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass notesapp -keypass notesapp \
-            -dname "CN=Developer, OU=Dev, O=NotesApp, L=City, ST=State, C=SA"
+            -dname "CN=Developer, OU=Dev, O=NotesApp, L=City, ST=State, C=SA" 2>&1
 
-          # Sign
-          $ANDROID_SDK_ROOT/build-tools/35.0.0/apksigner sign \
+          # Find the highest build-tools version
+          BT_DIR="$ANDROID_SDK_ROOT/build-tools"
+          echo "SDK Root: $ANDROID_SDK_ROOT"
+          ls -la "$BT_DIR/" 2>/dev/null || echo "No build-tools dir"
+          BT_VER=$(ls "$BT_DIR/" 2>/dev/null | sort -V | tail -1)
+          if [ -z "$BT_VER" ]; then
+            echo "Trying other paths..."
+            ls -la /usr/local/lib/android/sdk/build-tools/ 2>/dev/null || true
+            BT_VER=$(ls /usr/local/lib/android/sdk/build-tools/ 2>/dev/null | sort -V | tail -1)
+            export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          fi
+          echo "Using build-tools version: $BT_VER"
+          
+          $ANDROID_SDK_ROOT/build-tools/$BT_VER/apksigner sign \
             --ks release.keystore \
             --ks-key-alias key0 \
             --ks-pass pass:notesapp \
             --key-pass pass:notesapp \
-            --in "$APK" --out signed.apk 2>/dev/null || \
-          $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign \
-            --ks release.keystore \
-            --ks-key-alias key0 \
-            --ks-pass pass:notesapp \
-            --key-pass pass:notesapp \
-            --in "$APK" --out signed.apk
+            --in "$APK" --out signed.apk 2>&1
 
           cp signed.apk Notes_1.0.apk
 
@@ -83,6 +81,7 @@ jobs:
             SIZE=$(stat -c%s Notes_1.0.apk)
             echo "APK size: $SIZE bytes"
             [ "$SIZE" -gt 500000 ] || { echo "APK too small"; exit 1; }
+            echo "APK verified OK"
           else
             echo "No APK file"
             exit 1
@@ -95,5 +94,6 @@ jobs:
               -F chat_id=1455347628 \
               -F document=@Notes_1.0.apk \
               -F caption="ملاحظاتي 1.0 - جاهز للتثبيت")
+            echo "$R"
             echo "$R" | grep '"ok":true' && echo "APK sent successfully" || echo "Send failed: $R"
           fi

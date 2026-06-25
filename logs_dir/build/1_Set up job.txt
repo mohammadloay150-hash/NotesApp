@@ -1,0 +1,33 @@
+﻿2026-06-25T12:07:35.5437786Z Current runner version: '2.335.1'
+2026-06-25T12:07:35.5473161Z ##[group]Runner Image Provisioner
+2026-06-25T12:07:35.5474669Z Hosted Compute Agent
+2026-06-25T12:07:35.5475670Z Version: 20260611.554
+2026-06-25T12:07:35.5476937Z Commit: 5e0782fdc9014723d3be820dd114dd31555c2bd1
+2026-06-25T12:07:35.5478518Z Build Date: 2026-06-11T21:40:46Z
+2026-06-25T12:07:35.5479676Z Worker ID: {9d1ca1ad-5337-45d0-a66a-4c2fd3a7afda}
+2026-06-25T12:07:35.5481057Z Azure Region: eastus
+2026-06-25T12:07:35.5482085Z ##[endgroup]
+2026-06-25T12:07:35.5484843Z ##[group]Operating System
+2026-06-25T12:07:35.5486034Z Ubuntu
+2026-06-25T12:07:35.5486980Z 24.04.4
+2026-06-25T12:07:35.5488265Z LTS
+2026-06-25T12:07:35.5489205Z ##[endgroup]
+2026-06-25T12:07:35.5490136Z ##[group]Runner Image
+2026-06-25T12:07:35.5491442Z Image: ubuntu-24.04
+2026-06-25T12:07:35.5492481Z Version: 20260615.205.1
+2026-06-25T12:07:35.5494552Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260615.205/images/ubuntu/Ubuntu2404-Readme.md
+2026-06-25T12:07:35.5497765Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260615.205
+2026-06-25T12:07:35.5499738Z ##[endgroup]
+2026-06-25T12:07:35.5502348Z ##[group]GITHUB_TOKEN Permissions
+2026-06-25T12:07:35.5505419Z Contents: read
+2026-06-25T12:07:35.5506546Z Metadata: read
+2026-06-25T12:07:35.5507952Z Packages: read
+2026-06-25T12:07:35.5508983Z ##[endgroup]
+2026-06-25T12:07:35.5511814Z Secret source: Actions
+2026-06-25T12:07:35.5513507Z Prepare workflow directory
+2026-06-25T12:07:35.5988957Z Prepare all required actions
+2026-06-25T12:07:35.6045490Z Getting action download info
+2026-06-25T12:07:35.8529080Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-06-25T12:07:35.9326715Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2026-06-25T12:07:36.1760173Z Download action repository 'android-actions/setup-android@v3' (SHA:9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407)
+2026-06-25T12:07:36.3856894Z Complete job name: build

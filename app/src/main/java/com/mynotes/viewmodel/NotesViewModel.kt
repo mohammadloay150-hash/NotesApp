@@ -15,7 +15,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class NotesViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: NoteRepository
+    private val repository: NoteRepository by lazy {
+        val database = NoteDatabase.getDatabase(application)
+        NoteRepository(database.noteDao())
+    }
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
@@ -30,11 +33,6 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
 
     val noteCount: StateFlow<Int> = repository.noteCount
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
-
-    init {
-        val database = NoteDatabase.getDatabase(application)
-        repository = NoteRepository(database.noteDao())
-    }
 
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query

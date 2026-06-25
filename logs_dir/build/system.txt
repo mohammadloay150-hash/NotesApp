@@ -1,0 +1,8 @@
+2026-06-25T12:07:32.3040000Z Requested labels: ubuntu-latest
+2026-06-25T12:07:32.3040000Z Job defined at: mohammadloay150-hash/NotesApp/.github/workflows/build.yml@refs/heads/main
+2026-06-25T12:07:32.3040000Z Waiting for a runner to pick up this job...
+2026-06-25T12:07:32.3020000Z Evaluating build.if
+2026-06-25T12:07:32.3020000Z Evaluating: success()
+2026-06-25T12:07:32.3020000Z Result: true
+2026-06-25T12:07:33.2970000Z Job is about to start running on the hosted runner: GitHub Actions 1000001669
+2026-06-25T12:07:33.2980000Z Job is waiting for a hosted runner to come online.
