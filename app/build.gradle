@@ -13,14 +13,18 @@ android {
         applicationId 'com.mynotes'
         minSdk 24
         targetSdk 35
-        versionCode 1
-        versionName '1.0'
+        versionCode 2
+        versionName '2.0'
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
         }
     }
 
@@ -35,6 +39,12 @@ android {
 
     buildFeatures {
         compose true
+    }
+
+    packaging {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 

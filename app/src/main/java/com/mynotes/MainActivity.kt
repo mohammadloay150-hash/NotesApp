@@ -4,7 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,17 +29,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            NotesAppTheme {
-                NotesApp()
+            val viewModel: NotesViewModel = viewModel()
+            val isDarkMode by viewModel.isDarkMode.collectAsState()
+
+            NotesAppTheme(darkTheme = isDarkMode) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    NotesApp(viewModel = viewModel)
+                }
             }
         }
     }
 }
 
 @Composable
-fun NotesApp() {
+fun NotesApp(viewModel: NotesViewModel = viewModel()) {
     val navController = rememberNavController()
-    val viewModel: NotesViewModel = viewModel()
+    val showArchived by viewModel.showArchived.collectAsState()
 
     NavHost(
         navController = navController,
@@ -46,6 +61,9 @@ fun NotesApp() {
                 },
                 onAddClick = {
                     navController.navigate(Screen.NoteDetail.createRoute(null))
+                },
+                onArchivedClick = {
+                    viewModel.toggleArchived()
                 }
             )
         }

@@ -35,6 +35,26 @@ private val LightColorScheme = lightColorScheme(
     outline = Outline
 )
 
+private val DarkColorScheme = darkColorScheme(
+    primary = PrimaryDark,
+    primaryContainer = PrimaryContainerDark,
+    onPrimaryContainer = OnPrimaryContainerDark,
+    secondary = SecondaryDark,
+    secondaryContainer = SecondaryContainerDark,
+    onSecondaryContainer = OnSecondaryContainerDark,
+    tertiary = TertiaryDark,
+    tertiaryContainer = TertiaryContainerDark,
+    error = ErrorDark,
+    errorContainer = ErrorContainerDark,
+    background = BackgroundDark,
+    surface = SurfaceDark,
+    surfaceVariant = SurfaceVariantDark,
+    onBackground = OnBackgroundDark,
+    onSurface = OnSurfaceDark,
+    onSurfaceVariant = OnSurfaceVariantDark,
+    outline = OutlineDark
+)
+
 @Composable
 fun NotesAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -46,6 +66,7 @@ fun NotesAppTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
+        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
@@ -54,7 +75,7 @@ fun NotesAppTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
